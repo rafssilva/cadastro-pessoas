@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    
+<h:head>
+    <title>Tipos de Endereço</title>
+</h:head>
+
+<h:body>
+    <h:form id="tipoEnderecoForm">
+        <p:panel header="Tipos de Endereço" style="width: 50%; margin: auto; text-align: center;">
+            
+            <p:messages id="messages" globalOnly="true" closable="true"/>
+            
+            <p:outputLabel for="descricao" value="Descrição:" style="display: block; margin-bottom: 5px;"/>
+            <p:inputText id="descricao" value="#{tipoEnderecoBean.filtroDescricao}"/>
+            
+            <p:separator style="margin: 10px 0;"/>
+            
+            <p:commandButton value="Pesquisar" action="#{tipoEnderecoBean.pesquisar()}" process="@this descricao" update="tipoEnderecoForm" style="margin-right: 10px;"/>
+            <p:commandButton value="Novo" action="#{tipoEnderecoBean.novo()}" oncomplete="PF('tipoEnderecoDialog').show();" process="@this" update="tipoEnderecoDialog" style="margin-right: 10px;"/>
+            <p:commandButton value="Voltar" action="#{tipoEnderecoBean.voltarParaMenuPrincipal()}" ajax="false" immediate="true"/>
+        </p:panel>
+
+        <p:separator style="margin: 20px 0;"/>
+
+        <p:panel header="Resultados da Pesquisa" style="width: 50%; margin: auto; text-align: center;">
+            <p:dataTable id="dataTable" value="#{tipoEnderecoBean.listaTipoEndereco}" var="tipoEndereco" emptyMessage="Nenhum resultado encontrado."
+            			 paginator="true" rows="10" paginatorPosition="bottom">
+                
+                <p:column headerText="Descrição">
+                    <h:outputText value="#{tipoEndereco.descricao}"/>
+                </p:column>
+
+                <p:column headerText="Editar" style="text-align: center;">
+                    <p:commandButton icon="ui-icon-pencil" title="Editar" action="#{tipoEnderecoBean.editar(tipoEndereco)}" process="@this"
+                                     oncomplete="PF('tipoEnderecoDialog').show();" update=":tipoEnderecoForm:tipoEnderecoDialog"/>
+                </p:column>
+
+                <p:column headerText="Excluir" style="text-align: center;">
+                    <p:commandButton icon="ui-icon-trash" title="Excluir" process="@this" action="#{tipoEnderecoBean.excluir(tipoEndereco)}"
+                                     styleClass="ui-button-danger" update="dataTable :tipoEnderecoForm:messages">
+                        <p:confirm header="Confirmação" message="Deseja realmente excluir este tipo de endereço?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+        </p:confirmDialog>
+
+        <p:dialog id="tipoEnderecoDialog" header="Cadastrar Tipo de Endereço" widgetVar="tipoEnderecoDialog" modal="true" resizable="false">
+        	<p:messages id="msg" closable="true"/>
+            <h:panelGrid columns="2" cellpadding="5">
+                <p:outputLabel for="descricaoTipoEndereco" value="Descrição:"/>
+                <p:inputText id="descricaoTipoEndereco" required="true" requiredMessage="A descrição é obrigatória."
+                			 value="#{tipoEnderecoBean.tipoEnderecoParaCadastrarOuEditar.descricao}"/>
+            </h:panelGrid>
+
+            <p:separator/>
+
+            <p:commandButton value="Salvar" action="#{tipoEnderecoBean.salvar(tipoEnderecoBean.tipoEnderecoParaCadastrarOuEditar)}"
+                             update="descricaoTipoEndereco dataTable msg messages" oncomplete="if(!args.error &amp;&amp; !args.validationFailed) { PF('tipoEnderecoDialog').hide(); }"/>
+            <p:commandButton value="Cancelar" immediate="true" onclick="PF('tipoEnderecoDialog').hide();" style="margin-left:10px;"/>
+        </p:dialog>
+
+    </h:form>
+</h:body>
+
+</html>

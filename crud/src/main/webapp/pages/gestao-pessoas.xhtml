@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+  <h:head>
+    <title>Gestão de Pessoas</title>
+    <h:outputScript library="js" name="locale.js" />
+  </h:head>
+  <h:body>
+    <h:form id="formGestaoPessoas">
+      <p:panel header="Gestão de Pessoas" style="width: 70%; margin: auto; text-align: center;">
+      
+      	<p:messages id="messages" globalOnly="true" closable="true"/>
+      
+        <p:panelGrid columns="2" columnClasses="label,value" style="margin-bottom:15px;">
+          <h:outputLabel for="filtroNome" value="Nome:" />
+          <p:inputText id="filtroNome" value="#{gestaoPessoasBean.filtroNome}" style="width:100%;" />
+
+          <h:outputLabel for="filtroCpf" value="CPF:" />
+          <p:inputMask id="filtroCpf" value="#{gestaoPessoasBean.filtroCpf}" mask="999.999.999-99" style="width:100%;" />
+
+          <h:outputLabel for="filtroDataNascimento" value="Data de Nascimento:" />
+          <p:datePicker id="filtroDataNascimento" value="#{gestaoPessoasBean.filtroDataNascimento}" pattern="dd/MM/yyyy" locale="pt_BR"
+          			  	monthNavigator="true" yearNavigator="true" mindate="#{gestaoPessoasBean.minDate}" maxdate="#{gestaoPessoasBean.maxDate}" yearRange="#{gestaoPessoasBean.yearRange}"/>
+
+          <h:outputLabel for="filtroSexo" value="Sexo:" />
+          <p:selectOneMenu id="filtroSexo" value="#{gestaoPessoasBean.filtroSexo}" style="width:100%;">
+            <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
+            <f:selectItems value="#{gestaoPessoasBean.listaSexo}" var="sexo" 
+                           itemLabel="#{sexo.descricao}" itemValue="#{sexo}" />
+          </p:selectOneMenu>
+        </p:panelGrid>
+        
+        <p:separator style="margin:15px 0;" />
+        
+        <p:commandButton value="Pesquisar" action="#{gestaoPessoasBean.pesquisar()}" process="@this filtroNome filtroCpf filtroDataNascimento filtroSexo"
+        				 update="formGestaoPessoas" style="margin-right:10px;" />
+        <p:commandButton value="Novo" action="#{gestaoPessoasBean.novo()}" oncomplete="PF('pessoaDialog').show();" process="@this" update="pessoaDialog" style="margin-right:10px;" />
+        <p:commandButton value="Voltar" action="#{gestaoPessoasBean.voltarParaMenuPrincipal()}" ajax="false" immediate="true" />
+      </p:panel>
+      
+      <p:separator style="margin: 20px 0;"/>
+
+        <p:panel header="Resultados da Pesquisa" style="width: 70%; margin: auto; text-align: center;">
+            <p:dataTable id="dataTable" value="#{gestaoPessoasBean.listaPessoa}" var="pessoa" emptyMessage="Nenhum resultado encontrado."
+            			 paginator="true" rows="10" paginatorPosition="bottom">
+                
+                <p:column headerText="Nome">
+                    <h:outputText value="#{pessoa.nome}"/>
+                </p:column>
+                
+                <p:column headerText="CPF">
+                    <h:outputText value="#{pessoa.cpf}"/>
+                </p:column>
+                
+                <p:column headerText="Nascimento">
+                    <h:outputText value="#{pessoa.dataNascimento}">
+                    	<f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+                
+                <p:column headerText="Idade">
+                    <h:outputText value="#{pessoa.idade}"/>
+                </p:column>
+                
+                <p:column headerText="Sexo">
+                    <h:outputText value="#{pessoa.sexo.descricao}"/>
+                </p:column>
+
+                <p:column headerText="Ações" style="text-align: center;">
+    				<p:commandButton icon="ui-icon-search" title="Ver Endereços" styleClass="btn-action" action="#{gestaoPessoasBean.exibirEnderecos(pessoa)}"
+    								 oncomplete="PF('enderecoListDialog').show();" process="@this" update=":formGestaoPessoas:enderecoListDialog"/>
+    				<p:commandButton icon="ui-icon-plus" title="Novo Endereço" styleClass="btn-action" action="#{gestaoPessoasBean.novoEndereco(pessoa)}"
+    								 oncomplete="PF('enderecoDialog').show();" process="@this" update=":formGestaoPessoas:enderecoDialog"/>
+    				<p:commandButton icon="ui-icon-pencil" title="Editar Pessoa" styleClass="btn-action" oncomplete="PF('pessoaDialog').show();"
+    								 action="#{gestaoPessoasBean.editar(pessoa)}" process="@this" update=":formGestaoPessoas:pessoaDialog"/>
+    				<p:commandButton icon="ui-icon-trash" update="dataTable :formGestaoPessoas:messages" process="@this"
+    								 title="Excluir Pessoa" styleClass="btn-action" action="#{gestaoPessoasBean.excluir(pessoa)}">
+    					<p:confirm header="Confirmação" message="Deseja realmente excluir pessoa?" icon="pi pi-exclamation-triangle"/>
+    				</p:commandButton>
+				</p:column>
+
+            </p:dataTable>
+        </p:panel>
+        
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+        </p:confirmDialog>
+        
+        <p:dialog id="pessoaDialog" header="Cadastrar Pessoa" widgetVar="pessoaDialog" modal="true" resizable="false">
+        	<p:messages id="msg" closable="true"/>
+            <h:panelGrid columns="2" cellpadding="5">
+                <p:outputLabel for="nomePessoa" value="Nome:"/>
+                <p:inputText id="nomePessoa" required="true" requiredMessage="O nome é obrigatório."
+                			 value="#{gestaoPessoasBean.pessoaParaCadastrarOuEditar.nome}"/>
+                <p:outputLabel for="cpfPessoa" value="CPF:"/>
+                <p:inputMask id="cpfPessoa" required="true" requiredMessage="O CPF é obrigatório."
+                			 value="#{gestaoPessoasBean.pessoaParaCadastrarOuEditar.cpf}" mask="999.999.999-99"/>
+                <h:outputLabel for="dataNascimentoPessoa" value="Data de Nascimento:" />
+          		<p:datePicker id="dataNascimentoPessoa" value="#{gestaoPessoasBean.pessoaParaCadastrarOuEditar.dataNascimento}"
+          					  pattern="dd/MM/yyyy" locale="pt_BR" monthNavigator="true" yearNavigator="true"
+          					  mindate="#{gestaoPessoasBean.minDate}" maxdate="#{gestaoPessoasBean.maxDate}" yearRange="#{gestaoPessoasBean.yearRange}"/>
+          		<h:outputLabel for="sexoPessoa" value="Sexo:" />
+          		<p:selectOneMenu id="sexoPessoa" value="#{gestaoPessoasBean.pessoaParaCadastrarOuEditar.sexo}" style="width:100%;">
+           			<f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true" />
+            		<f:selectItems value="#{gestaoPessoasBean.listaSexo}" var="sexo" itemLabel="#{sexo.descricao}" itemValue="#{sexo}" />
+          		</p:selectOneMenu>
+            </h:panelGrid>
+
+            <p:separator/>
+
+            <p:commandButton value="Salvar" action="#{gestaoPessoasBean.salvar(gestaoPessoasBean.pessoaParaCadastrarOuEditar)}"
+                             update="nomePessoa cpfPessoa dataNascimentoPessoa sexoPessoa dataTable msg messages"
+                             process="@this nomePessoa cpfPessoa dataNascimentoPessoa sexoPessoa"
+                             oncomplete="if(!args.error &amp;&amp; !args.validationFailed) { PF('pessoaDialog').hide(); }"/>
+            <p:commandButton value="Cancelar" immediate="true" onclick="PF('pessoaDialog').hide();" style="margin-left:10px;"/>
+        </p:dialog>
+        
+        <p:dialog id="enderecoDialog" header="Cadastrar Endereço" widgetVar="enderecoDialog" modal="true" resizable="false">
+        	<p:messages id="msgEnderecoDialog" closable="true"/>
+            <h:panelGrid columns="2" cellpadding="5">
+            	
+            	<p:outputLabel for="tipoEndereco" value="Tipo de Endereço:" style="display: block; margin-bottom: 5px;"/>
+            	<p:selectOneMenu id="tipoEndereco" value="#{gestaoPessoasBean.enderecoParaCadastrarOuEditar.tipoEndereco}" filter="true"
+            					 filterMatchMode="contains" converter="baseModelConverter" required="true" requiredMessage="O tipo de endereço é obrigatório.">
+                	<f:selectItem itemLabel="Selecione um tipo de endereço" itemValue="#{null}"/>
+                	<f:selectItems value="#{gestaoPessoasBean.listaTipoEndereco}" var="tipoEndereco" itemLabel="#{tipoEndereco.descricao}" itemValue="#{tipoEndereco}"/>
+                	<f:attribute name="items" value="#{gestaoPessoasBean.listaTipoEndereco}" />
+            	</p:selectOneMenu>
+            
+                <p:outputLabel for="logradouro" value="Logradouro:"/>
+                <p:inputText id="logradouro" required="true" requiredMessage="O logradouro é obrigatório."
+                			 value="#{gestaoPessoasBean.enderecoParaCadastrarOuEditar.logradouro}"/>
+                <p:outputLabel for="numero" value="Número:"/>
+                <p:inputNumber id="numero" value="#{gestaoPessoasBean.enderecoParaCadastrarOuEditar.numero}" decimalPlaces="0"/>
+                <h:outputLabel for="cep" value="CEP:" />
+          		<p:inputMask id="cep" value="#{gestaoPessoasBean.enderecoParaCadastrarOuEditar.cep}" mask="99999-999"/>
+          		
+          		<p:outputLabel for="estado" value="Estado:" style="display: block; margin-bottom: 5px;"/>
+            	<p:selectOneMenu id="estado" value="#{gestaoPessoasBean.estadoSelecionado}" filter="true"
+            					 filterMatchMode="contains" converter="baseModelConverter">
+                	<f:selectItem itemLabel="Selecione um estado" itemValue="#{null}"/>
+                	<f:selectItems value="#{gestaoPessoasBean.listaEstado}" var="estado" itemLabel="#{estado.descricao}" itemValue="#{estado}"/>
+                	<f:attribute name="items" value="#{gestaoPessoasBean.listaEstado}" />
+                	<p:ajax event="change" listener="#{gestaoPessoasBean.selecionarEstado}" update="municipio"/>
+            	</p:selectOneMenu>
+            	
+            	<p:outputLabel for="municipio" value="Município:" style="display: block; margin-bottom: 5px;"/>
+            	<p:selectOneMenu id="municipio" value="#{gestaoPessoasBean.enderecoParaCadastrarOuEditar.municipio}" filter="true"
+            					 filterMatchMode="contains" converter="baseModelConverter" required="true" requiredMessage="O município é obrigatório.">
+                	<f:selectItem itemLabel="Selecione um município" itemValue="#{null}"/>
+                	<f:selectItems value="#{gestaoPessoasBean.listaMunicipio}" var="municipio" itemLabel="#{municipio.descricao}" itemValue="#{municipio}"/>
+                	<f:attribute name="items" value="#{gestaoPessoasBean.listaMunicipio}" />
+            	</p:selectOneMenu>
+            </h:panelGrid>
+
+            <p:separator/>
+
+            <p:commandButton value="Salvar" action="#{gestaoPessoasBean.salvarEndereco(gestaoPessoasBean.enderecoParaCadastrarOuEditar)}"
+                             update="logradouro numero cep dataTable msgEnderecoDialog messages" rendered="#{gestaoPessoasBean.cadastrando}"
+                             process="@this logradouro numero cep tipoEndereco estado municipio"
+                             oncomplete="if(!args.error &amp;&amp; !args.validationFailed) { PF('enderecoDialog').hide(); }"/>
+            <p:commandButton value="Salvar" action="#{gestaoPessoasBean.salvarEnderecoEditado(gestaoPessoasBean.enderecoParaCadastrarOuEditar)}"
+            				 update="logradouro numero cep enderecoTable msgEnderecoListDialog msgEnderecoDialog" rendered="#{not gestaoPessoasBean.cadastrando}"
+            				 process="@this logradouro numero cep tipoEndereco estado municipio"
+            				 oncomplete="if(!args.error &amp;&amp; !args.validationFailed) { PF('enderecoDialog').hide(); }"/>
+            <p:commandButton value="Cancelar" immediate="true" onclick="PF('enderecoDialog').hide();" style="margin-left:10px;"/>
+        </p:dialog>
+        
+        
+        
+        
+        
+        
+        
+        
+        <p:dialog id="enderecoListDialog" widgetVar="enderecoListDialog" modal="true" resizable="false" width="80%"
+          		  header="Visualização de Endereços">
+          		  
+          	<h:panelGroup style="text-align: center; margin-bottom: 10px; font-weight: bold; font-size: 16px; color: #007ad9;">
+        		Endereços de #{gestaoPessoasBean.nomePessoaEnderecos}
+    		</h:panelGroup>
+          		  
+          	<p:messages id="msgEnderecoListDialog" closable="true"/>
+    
+    		<p:dataTable id="enderecoTable" value="#{gestaoPessoasBean.listaEnderecosDaPessoa}" var="endereco"
+                 		 emptyMessage="Nenhum endereço encontrado." paginator="true" rows="10">
+        
+        		<p:column headerText="Tipo Endereço">
+            		<h:outputText value="#{endereco.tipoEndereco.descricao}" />
+        		</p:column>
+        
+        		<p:column headerText="Logradouro">
+            		<h:outputText value="#{endereco.logradouro}" />
+        		</p:column>
+        
+        		<p:column headerText="Número">
+            		<h:outputText value="#{endereco.numero}" />
+        		</p:column>
+        
+        		<p:column headerText="CEP">
+            		<h:outputText value="#{endereco.cep}" />
+        		</p:column>
+        
+        		<p:column headerText="Município">
+            		<h:outputText value="#{endereco.municipio.descricao}" />
+        		</p:column>
+        
+        		<p:column headerText="Estado">
+            		<h:outputText value="#{endereco.municipio.estado.descricao}" />
+        		</p:column>
+        
+        		<p:column headerText="Editar" style="text-align:center;">
+            		<p:commandButton icon="ui-icon-pencil" title="Editar" action="#{gestaoPessoasBean.editarEndereco(endereco)}"
+            						  oncomplete="PF('enderecoDialog').show();" process="@this" update=":formGestaoPessoas:enderecoDialog"/>
+        		</p:column>
+        
+        		<p:column headerText="Excluir" style="text-align:center;">
+            		<p:commandButton icon="ui-icon-trash" title="Excluir" process="@this" action="#{gestaoPessoasBean.excluirEndereco(endereco)}"
+            						 update="enderecoTable :formGestaoPessoas:msgEnderecoListDialog">
+                		<p:confirm header="Confirmação" message="Deseja realmente excluir este endereço?" 
+                           		   icon="pi pi-exclamation-triangle"/>
+            		</p:commandButton>
+        		</p:column>
+        
+    		</p:dataTable>
+    
+    		<p:separator style="margin-top:10px; margin-bottom:10px;" />
+    
+    		<p:commandButton value="Fechar" immediate="true" onclick="PF('enderecoListDialog').hide();" style="margin-top:10px;" />
+    
+		</p:dialog>
+        
+        
+        
+        
+        
+      
+    </h:form>
+  </h:body>
+</html>
