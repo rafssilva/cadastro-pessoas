@@ -54,8 +54,6 @@ selecionar a opção refresh
 
 *** O PROJETO ***
 
-extraia o arquivo crud.zip em um diretório de sua preferência
-
 abra a ide eclipse
 
 no menu superior, clique em file > import...
@@ -66,7 +64,7 @@ clique em next
 
 em root directory clique em browse
 
-navegue ate o diretório onde extraiu o aquivo crud e clique em selecionar pasta
+navegue ate o diretório onde está a pasta crud (cadastro-pessoas-master -> crud) e clique em selecionar pasta
 
 clique em finish
 
