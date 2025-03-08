@@ -13,8 +13,10 @@
       <p:panel header="Gestão de Pessoas" style="width: 70%; margin: auto; text-align: center;">
       
       	<p:messages id="messages" globalOnly="true" closable="true"/>
+
+	<div style="text-align: center;">
       
-        <p:panelGrid columns="2" columnClasses="label,value" style="margin-bottom:15px;">
+        <p:panelGrid columns="2" style="margin: 0 auto; margin-bottom:15px; text-align: center;" columnClasses="label,value">
           <h:outputLabel for="filtroNome" value="Nome:" />
           <p:inputText id="filtroNome" value="#{gestaoPessoasBean.filtroNome}" style="width:100%;" />
 
@@ -22,7 +24,7 @@
           <p:inputMask id="filtroCpf" value="#{gestaoPessoasBean.filtroCpf}" mask="999.999.999-99" style="width:100%;" />
 
           <h:outputLabel for="filtroDataNascimento" value="Data de Nascimento:" />
-          <p:datePicker id="filtroDataNascimento" value="#{gestaoPessoasBean.filtroDataNascimento}" pattern="dd/MM/yyyy" locale="pt_BR"
+          <p:datePicker id="filtroDataNascimento" value="#{gestaoPessoasBean.filtroDataNascimento}" pattern="dd/MM/yyyy" locale="pt_BR" inputStyle="width:100%;"
           			  	monthNavigator="true" yearNavigator="true" mindate="#{gestaoPessoasBean.minDate}" maxdate="#{gestaoPessoasBean.maxDate}" yearRange="#{gestaoPessoasBean.yearRange}"/>
 
           <h:outputLabel for="filtroSexo" value="Sexo:" />
@@ -32,6 +34,8 @@
                            itemLabel="#{sexo.descricao}" itemValue="#{sexo}" />
           </p:selectOneMenu>
         </p:panelGrid>
+
+	</div>
         
         <p:separator style="margin:15px 0;" />
         
@@ -126,7 +130,7 @@
             	<p:outputLabel for="tipoEndereco" value="Tipo de Endereço:" style="display: block; margin-bottom: 5px;"/>
             	<p:selectOneMenu id="tipoEndereco" value="#{gestaoPessoasBean.enderecoParaCadastrarOuEditar.tipoEndereco}" filter="true"
             					 filterMatchMode="contains" converter="baseModelConverter" required="true" requiredMessage="O tipo de endereço é obrigatório.">
-                	<f:selectItem itemLabel="Selecione um tipo de endereço" itemValue="#{null}"/>
+                	<f:selectItem itemLabel="Selecione um tipo de endereço" itemValue="#{null}" noSelectionOption="true"/>
                 	<f:selectItems value="#{gestaoPessoasBean.listaTipoEndereco}" var="tipoEndereco" itemLabel="#{tipoEndereco.descricao}" itemValue="#{tipoEndereco}"/>
                 	<f:attribute name="items" value="#{gestaoPessoasBean.listaTipoEndereco}" />
             	</p:selectOneMenu>
@@ -142,7 +146,7 @@
           		<p:outputLabel for="estado" value="Estado:" style="display: block; margin-bottom: 5px;"/>
             	<p:selectOneMenu id="estado" value="#{gestaoPessoasBean.estadoSelecionado}" filter="true"
             					 filterMatchMode="contains" converter="baseModelConverter">
-                	<f:selectItem itemLabel="Selecione um estado" itemValue="#{null}"/>
+                	<f:selectItem itemLabel="Selecione um estado" itemValue="#{null}" noSelectionOption="true"/>
                 	<f:selectItems value="#{gestaoPessoasBean.listaEstado}" var="estado" itemLabel="#{estado.descricao}" itemValue="#{estado}"/>
                 	<f:attribute name="items" value="#{gestaoPessoasBean.listaEstado}" />
                 	<p:ajax event="change" listener="#{gestaoPessoasBean.selecionarEstado}" update="municipio"/>
@@ -151,7 +155,7 @@
             	<p:outputLabel for="municipio" value="Município:" style="display: block; margin-bottom: 5px;"/>
             	<p:selectOneMenu id="municipio" value="#{gestaoPessoasBean.enderecoParaCadastrarOuEditar.municipio}" filter="true"
             					 filterMatchMode="contains" converter="baseModelConverter" required="true" requiredMessage="O município é obrigatório.">
-                	<f:selectItem itemLabel="Selecione um município" itemValue="#{null}"/>
+                	<f:selectItem itemLabel="Selecione um município" itemValue="#{null}" noSelectionOption="true"/>
                 	<f:selectItems value="#{gestaoPessoasBean.listaMunicipio}" var="municipio" itemLabel="#{municipio.descricao}" itemValue="#{municipio}"/>
                 	<f:attribute name="items" value="#{gestaoPessoasBean.listaMunicipio}" />
             	</p:selectOneMenu>
