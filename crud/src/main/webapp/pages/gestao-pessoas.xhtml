@@ -145,11 +145,11 @@
           		
           		<p:outputLabel for="estado" value="Estado:" style="display: block; margin-bottom: 5px;"/>
             	<p:selectOneMenu id="estado" value="#{gestaoPessoasBean.estadoSelecionado}" filter="true"
-            					 filterMatchMode="contains" converter="baseModelConverter">
+            					 filterMatchMode="contains" converter="baseModelConverter" required="true" requiredMessage="O estado é obrigatório.">
                 	<f:selectItem itemLabel="Selecione um estado" itemValue="#{null}" noSelectionOption="true"/>
                 	<f:selectItems value="#{gestaoPessoasBean.listaEstado}" var="estado" itemLabel="#{estado.descricao}" itemValue="#{estado}"/>
                 	<f:attribute name="items" value="#{gestaoPessoasBean.listaEstado}" />
-                	<p:ajax event="change" listener="#{gestaoPessoasBean.selecionarEstado}" update="municipio"/>
+                	<p:ajax event="change" listener="#{gestaoPessoasBean.selecionarEstado}" update="municipio" resetValues="true"/>
             	</p:selectOneMenu>
             	
             	<p:outputLabel for="municipio" value="Município:" style="display: block; margin-bottom: 5px;"/>
