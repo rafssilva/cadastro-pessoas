@@ -184,7 +184,7 @@
         		Endereços de #{gestaoPessoasBean.nomePessoaEnderecos}
     		</h:panelGroup>
           		  
-          	<p:messages id="msgEnderecoListDialog" closable="true"/>
+          	<p:messages id="msgEnderecoListDialog" globalOnly="true" closable="true"/>
     
     		<p:dataTable id="enderecoTable" value="#{gestaoPessoasBean.listaEnderecosDaPessoa}" var="endereco"
                  		 emptyMessage="Nenhum endereço encontrado." paginator="true" rows="10">
