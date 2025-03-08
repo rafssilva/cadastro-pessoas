@@ -19,16 +19,16 @@ public abstract class BaseModel implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(getId());
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null || getClass() != obj.getClass())
+        if (!(obj instanceof BaseModel))
             return false;
         BaseModel other = (BaseModel) obj;
-        return Objects.equals(id, other.id);
+        return Objects.equals(getId(), other.getId());
     }
 }
