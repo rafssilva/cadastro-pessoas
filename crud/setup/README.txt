@@ -108,16 +108,18 @@ clique com o direito sobre o server wildfly 18 no painel inferior
 selecione add and remove...
 clique em add all e depois em finish
 
-extraia o arquivo postgreSQL.zip para um diretório de sua preferencia e copie a pasta extraida
+extraia o arquivo postgreSQL.zip (pasta postgreSQL dentro do arquivo .zip) para um diretório de sua preferencia e copie a pasta extraida
 
 vá para a pasta raiz do wildfly (wildfly-18.0.0.Final)
-navegue até [pasta raiz onde wildfly foi extraído]wildfly-18.0.0.Final\modules\system\layers\base\org
-cole a pasta postgreSQL extraída de postgreSQL.zip
+navegue até [pasta raiz onde wildfly foi extraído - wildfly-18.0.0.Final]\modules\system\layers\base\org
+cole a pasta postgreSQL extraída de postgreSQL.zip neste diretório (org)
 
 na ide eclipse
 procure pelo wildfly na aba servers no painel inferior
 clique na seta a esquerda para expandir o painel de configurações
 expanda filesets > configuration file e abra o arquivo standalone.xml
+
+******************************************************************************************
 
 na seçao <datasources> cole o datasource abaixo
 
@@ -130,7 +132,9 @@ na seçao <datasources> cole o datasource abaixo
                     </security>
                 </datasource>
 
-certifique-se de alterar o user-name, o password e a porta (5432) de acordo com as suas configurações no postgresql
+*** certifique-se de alterar o user-name, o password e a porta (5432) de acordo com as suas configurações no postgresql ***
+
+******************************************************************************************
 
 logo abaixo na seção <drivers> cole o driver abaixo
 
@@ -139,6 +143,8 @@ logo abaixo na seção <drivers> cole o driver abaixo
                     </driver>
 
 inicie o servidor e acesse a aplicação no navegador por http://localhost:8080/crud
+
+******************************************************************************************
 
 
 
