@@ -160,11 +160,11 @@
             <p:separator/>
 
             <p:commandButton value="Salvar" action="#{gestaoPessoasBean.salvarEndereco(gestaoPessoasBean.enderecoParaCadastrarOuEditar)}"
-                             update="logradouro numero cep dataTable msgEnderecoDialog messages" rendered="#{gestaoPessoasBean.cadastrando}"
+                             update="logradouro numero cep tipoEndereco estado municipio dataTable msgEnderecoDialog messages" rendered="#{gestaoPessoasBean.cadastrando}"
                              process="@this logradouro numero cep tipoEndereco estado municipio"
                              oncomplete="if(!args.error &amp;&amp; !args.validationFailed) { PF('enderecoDialog').hide(); }"/>
             <p:commandButton value="Salvar" action="#{gestaoPessoasBean.salvarEnderecoEditado(gestaoPessoasBean.enderecoParaCadastrarOuEditar)}"
-            				 update="logradouro numero cep enderecoTable msgEnderecoListDialog msgEnderecoDialog" rendered="#{not gestaoPessoasBean.cadastrando}"
+            				 update="logradouro numero cep tipoEndereco estado municipio enderecoTable msgEnderecoListDialog msgEnderecoDialog" rendered="#{not gestaoPessoasBean.cadastrando}"
             				 process="@this logradouro numero cep tipoEndereco estado municipio"
             				 oncomplete="if(!args.error &amp;&amp; !args.validationFailed) { PF('enderecoDialog').hide(); }"/>
             <p:commandButton value="Cancelar" immediate="true" onclick="PF('enderecoDialog').hide();" style="margin-left:10px;"/>
