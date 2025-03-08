@@ -37,7 +37,7 @@
         
         <p:commandButton value="Pesquisar" action="#{gestaoPessoasBean.pesquisar()}" process="@this filtroNome filtroCpf filtroDataNascimento filtroSexo"
         				 update="formGestaoPessoas" style="margin-right:10px;" />
-        <p:commandButton value="Novo" action="#{gestaoPessoasBean.novo()}" oncomplete="PF('pessoaDialog').show();" process="@this" update="pessoaDialog" style="margin-right:10px;" />
+        <p:commandButton value="Novo" resetValues="true" action="#{gestaoPessoasBean.novo()}" oncomplete="PF('pessoaDialog').show();" process="@this" update="pessoaDialog" style="margin-right:10px;" />
         <p:commandButton value="Voltar" action="#{gestaoPessoasBean.voltarParaMenuPrincipal()}" ajax="false" immediate="true" />
       </p:panel>
       
@@ -72,9 +72,9 @@
                 <p:column headerText="Ações" style="text-align: center;">
     				<p:commandButton icon="ui-icon-search" title="Ver Endereços" styleClass="btn-action" action="#{gestaoPessoasBean.exibirEnderecos(pessoa)}"
     								 oncomplete="PF('enderecoListDialog').show();" process="@this" update=":formGestaoPessoas:enderecoListDialog"/>
-    				<p:commandButton icon="ui-icon-plus" title="Novo Endereço" styleClass="btn-action" action="#{gestaoPessoasBean.novoEndereco(pessoa)}"
+    				<p:commandButton icon="ui-icon-plus" resetValues="true" title="Novo Endereço" styleClass="btn-action" action="#{gestaoPessoasBean.novoEndereco(pessoa)}"
     								 oncomplete="PF('enderecoDialog').show();" process="@this" update=":formGestaoPessoas:enderecoDialog"/>
-    				<p:commandButton icon="ui-icon-pencil" title="Editar Pessoa" styleClass="btn-action" oncomplete="PF('pessoaDialog').show();"
+    				<p:commandButton icon="ui-icon-pencil" resetValues="true" title="Editar Pessoa" styleClass="btn-action" oncomplete="PF('pessoaDialog').show();"
     								 action="#{gestaoPessoasBean.editar(pessoa)}" process="@this" update=":formGestaoPessoas:pessoaDialog"/>
     				<p:commandButton icon="ui-icon-trash" update="dataTable :formGestaoPessoas:messages" process="@this"
     								 title="Excluir Pessoa" styleClass="btn-action" action="#{gestaoPessoasBean.excluir(pessoa)}">
@@ -214,7 +214,7 @@
         		</p:column>
         
         		<p:column headerText="Editar" style="text-align:center;">
-            		<p:commandButton icon="ui-icon-pencil" title="Editar" action="#{gestaoPessoasBean.editarEndereco(endereco)}"
+            		<p:commandButton icon="ui-icon-pencil" resetValues="true" title="Editar" action="#{gestaoPessoasBean.editarEndereco(endereco)}"
             						  oncomplete="PF('enderecoDialog').show();" process="@this" update=":formGestaoPessoas:enderecoDialog"/>
         		</p:column>
         
