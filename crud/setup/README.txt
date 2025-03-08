@@ -3,19 +3,24 @@
 
 Versão Java
 8 (8u441)
+https://www.oracle.com/webapps/redirect/signon?nexturl=https://download.oracle.com/otn/java/jdk/8u441-b07/7ed26d28139143f38c58992680c214a5/jdk-8u441-windows-x64.zip
+(Esteja logado na conta Oracle antes de abrir o link)
 
 
 Versão Eclipse
 2019-09-R
+https://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/2019-09/R/eclipse-jee-2019-09-R-win32-x86_64.zip
 (Versões mais recentes vêm com Java / Jakarta já embutido e pode causar problemas com o Java 8 que vamos utilizar)
 
 
 Versão WildFly
 18.0.0.Final
+https://download.jboss.org/wildfly/18.0.0.Final/wildfly-18.0.0.Final.zip
 
 
 Versão PostgreSQL
 MAIS RECENTE
+https://sbp.enterprisedb.com/getfile.jsp?fileid=1259402
 
 
 
